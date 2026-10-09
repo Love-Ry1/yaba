@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="booking-service/booking-service.csproj" />
   <Project Path="event-service/event-service.csproj" />
 </Solution>
