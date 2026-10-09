@@ -1,2 +1,2 @@
 # yaba
-yet another booking platform
+yet another booking app
