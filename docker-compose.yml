@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  event-service:
+    build:
+      context: .
+      dockerfile: event-service/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "5000"
+      ConnectionStrings__Default: Host=db;Port=5432;Database=eventdb;Username=postgres;Password=postgres
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  booking-service:
+    build:
+      context: .
+      dockerfile: booking-service/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "5001"
+      ConnectionStrings__Default: Host=db;Port=5432;Database=bookingdb;Username=postgres;Password=postgres
+      EventService__BaseUrl: http://event-service:5000
+    ports:
+      - "5001:5001"
+    depends_on:
+      db:
+        condition: service_healthy
+      event-service:
+        condition: service_started
+
+volumes:
+  db-data:
