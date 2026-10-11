@@ -99,10 +99,22 @@ public class BookingsController(BookingDbContext db, EventServiceClient events) 
         return CreatedAtAction(nameof(Get), new { id = booking.Id }, ToResponse(booking));
     }
 
+    [HttpGet]
+    public async Task<ActionResult<List<BookingResponse>>> ListForUser([FromQuery] string userId, CancellationToken ct)
+    {
+        var items = await db.Bookings.AsNoTracking()
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.CreatedAt)
+            .ToListAsync(ct);
+
+        return items.Select(ToResponse).ToList();
+    }
+
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<BookingResponse>> Get(Guid id, CancellationToken ct)
     {
         var booking = await db.Bookings.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id, ct);
+
         return booking is null ? NotFound() : ToResponse(booking);
     }
 
