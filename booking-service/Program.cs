@@ -9,8 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<BookingDbContext>(o =>
-    o.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
-
+    o.UseNpgsql(builder.Configuration.GetConnectionString("BookingDb")));
 builder.Services.AddHttpClient<EventServiceClient>(c =>
 {
     var baseUrl = builder.Configuration["EventService:BaseUrl"] ?? "http://localhost:8080";

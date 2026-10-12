@@ -11,8 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<EventDbContext>(o =>
-    o.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
-
+    o.UseNpgsql(builder.Configuration.GetConnectionString("EventDb")));
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

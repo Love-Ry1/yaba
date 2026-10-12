@@ -21,7 +21,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "5000"
-      ConnectionStrings__Default: Host=db;Port=5432;Database=eventdb;Username=postgres;Password=postgres
+      ConnectionStrings__EventDb: Host=db;Port=5432;Database=eventdb;Username=postgres;Password=postgres
     ports:
       - "5000:5000"
     depends_on:
@@ -35,7 +35,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: "5001"
-      ConnectionStrings__Default: Host=db;Port=5432;Database=bookingdb;Username=postgres;Password=postgres
+      ConnectionStrings__BookingDb: Host=db;Port=5432;Database=bookingdb;Username=postgres;Password=postgres
       EventService__BaseUrl: http://event-service:5000
     ports:
       - "5001:5001"
