@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: booking-service
+spec:
+  selector:
+    app: booking-service
+  ports:
+    - port: 5001
+      targetPort: 5001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booking-service
+  template:
+    metadata:
+      labels:
+        app: booking-service
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: postgres:18
+          command: ["sh", "-c", "until pg_isready -h db -p 5432; do echo waiting for db; sleep 2; done"]
+      containers:
+        - name: booking-service
+          image: yaba/booking-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5001
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "5001"
+            - name: EventService__BaseUrl
+              value: http://event-service:5000
+            - name: ConnectionStrings__BookingDb
+              valueFrom:
+                secretKeyRef:
+                  name: yaba-secrets
+                  key: BOOKING_DB_CONNECTION
