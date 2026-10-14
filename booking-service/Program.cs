@@ -1,4 +1,5 @@
 using booking_service.Data;
+using booking_service.Repositories;
 using booking_service.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -10,6 +11,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<BookingDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("BookingDb")));
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddHttpClient<EventServiceClient>(c =>
 {
     var baseUrl = builder.Configuration["EventService:BaseUrl"] ?? "http://localhost:8080";
