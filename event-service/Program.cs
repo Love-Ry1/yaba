@@ -1,4 +1,6 @@
 using event_service.Data;
+using event_service.Repositories;
+using event_service.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -12,6 +14,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<EventDbContext>(o =>
     o.UseNpgsql(builder.Configuration.GetConnectionString("EventDb")));
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventService, EventService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
