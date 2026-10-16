@@ -9,12 +9,9 @@ resources:
   - booking-service.yaml
   - frontend.yaml
 images:
-  - name: yaba/event-service
-    newName: yaba/event-service
+  - name: lovery1/yaba-event-service
     newTag: latest
-  - name: yaba/booking-service
-    newName: yaba/booking-service
+  - name: lovery1/yaba-booking-service
     newTag: latest
-  - name: yaba/frontend
-    newName: yaba/frontend
+  - name: lovery1/yaba-frontend
     newTag: latest
