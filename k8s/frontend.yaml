@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: yaba/frontend
-          imagePullPolicy: IfNotPresent
+          image: lovery1/yaba-frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80

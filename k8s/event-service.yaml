@@ -29,8 +29,8 @@ spec:
           command: ["sh", "-c", "until pg_isready -h db -p 5432; do echo waiting for db; sleep 2; done"]
       containers:
         - name: event-service
-          image: yaba/event-service
-          imagePullPolicy: IfNotPresent
+          image: lovery1/yaba-event-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           env:
